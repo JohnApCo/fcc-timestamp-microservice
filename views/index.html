@@ -1,32 +1,153 @@
 <!DOCTYPE html>
 
 <html>
-   <head>
-      <title>Timestamp Microservice | freeCodeCamp.org</title>
-      <link rel="shortcut icon" href="https://cdn.freecodecamp.org/universal/favicons/favicon-32x32.png" type="image/x-icon"/>
-      <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
-      <link href="style.css" rel="stylesheet" type="text/css">
-   </head>
 
-   <body>
-    <h1>Timestamp Microservice</h1>
-    <hr />
-    <div class="container">
-      <h3>Example Usage:</h3>
-      <ul>
-        <li><a href="api/2015-12-25">[project url]/api/2015-12-25</a></li>
-        <li><a href="api/1451001600000">[project url]/api/1451001600000</a></li>
-      </ul>
+<head>
+  <title>Timestamp Microservice | freeCodeCamp.org</title>
+  <link rel="shortcut icon" href="https://cdn.freecodecamp.org/universal/favicons/favicon-32x32.png" type="image/x-icon" />
+  <link href="https://fonts.googleapis.com/css?family=Roboto&family=Source+Code+Pro:wght@700" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
+  <link href="normalize.css" rel="stylesheet" type="text/css">
+  <link href="style.css" rel="stylesheet" type="text/css">
+</head>
 
-      <h3>Example Output:</h3>
-      <p>
-        <code>{"unix":1451001600000, "utc":"Fri, 25 Dec 2015 00:00:00 GMT"}</code>
-      </p>
+<body>
+  <header class="header">
+    <div class="header-container">
+      <a class="logo" href="/">
+        <img class="logo__img" src="img/logo_only.svg" alt="johnapco">
+        <h2 class="logo__name">JohnApCo</h2>
+      </a>
+      <nav class="icons">
+        <a class="icon link" href="https://github.com/JohnApCo" target="_blank" rel="noopener nofollow">
+          <i class="fa-brands fa-github"></i>
+        </a>
+        <a class="icon link" href="https://www.linkedin.com/in/johnapco/" target="_blank" rel="noopener nofollow">
+          <i class="fa-brands fa-linkedin"></i></a>
+        <button class="icon link theme-toggle" id="emoticon-mode" rel="noopener nofollow">
+          <i class="fa fa-moon"></i>
+        </button>
+      </nav>
     </div>
-    <div class="footer">
-      <p>
-        By <a href="https://www.freecodecamp.org/">freeCodeCamp.org</a>
-      </p>
-    </div>
-  </body>
+    <script>
+      (function(d, w, ls) {
+        const $btn = d.querySelector(".theme-toggle");
+        let prefersDark = w.matchMedia('(prefers-color-scheme: dark)').matches,
+          lightIcon = `<i class="fa-solid fa-sun"></i>`,
+          darkIcon = `<i class="fa-solid fa-moon"></i>`;
+
+        function lightMode() {
+          ls.setItem("theme", "light");
+          d.querySelector(":root").classList.add("light");
+          d.querySelector(":root").classList.remove("dark");
+          $btn.innerHTML = lightIcon;
+        }
+
+        function darkMode() {
+          ls.setItem("theme", "dark");
+          d.querySelector(":root").classList.remove("light");
+          d.querySelector(":root").classList.add("dark");
+          $btn.innerHTML = darkIcon;
+        }
+
+        if (ls.getItem("theme") === null) {
+          if (prefersDark) {
+            ls.setItem("theme", "dark");
+          } else {
+            ls.setItem("theme", "light");
+          }
+        }
+
+        if (ls.getItem("theme") === "dark") darkMode();
+        if (ls.getItem("theme") === "light") lightMode();
+
+        $btn.addEventListener("click", (e) => (ls.getItem("theme") === "dark") ? lightMode() : darkMode());
+      })(document, window, localStorage);
+    </script>
+  </header>
+  <main class="main">
+    <section class="container-lg">
+      <h1 class="text-center">
+        <span class="text-primary">Timestamp</span><wbr><span>Microservice</span>
+      </h1>
+    </section>
+    <!-- Valid date -->
+    <section class="container-lg api-examples">
+      <article class="card">
+        <h2 class="card__title">Valid date</h2>
+        <pre>
+          <span class="key">GET</span> /api/2020-12-30
+        </pre>
+        <pre>
+          {
+          &emsp; <span class="key">"unix"</span>: 1609286400000,
+          &emsp; <span class="key">"utc"</span>: "Wed, Dec 30, 2020, 01:00:00 GMT+1"
+          }
+        </pre>
+        <form action="api/2020-12-30" method="GET">
+          <button class="btn" type="submit">Try it</button>
+        </form>
+      </article>
+
+      <!-- Unix timestamp -->
+      <article class="card">
+        <h2 class="card__title">Unix timestamp</h2>
+        <pre>
+          <span class="key">GET</span> /api/1451001600000
+        </pre>
+        <pre>
+          {
+          &emsp; <span class="key">"unix"</span>: 1451001600000,
+          &emsp; <span class="key">"utc"</span>: "Fri, Dec 25, 2015, 01:00:00 GMT+1"
+          }
+        </pre>
+        <form action="api/1451001600000" method="GET">
+          <button class="btn" type="submit">Try it</button>
+        </form>
+      </article>
+
+      <!-- Current time (empty parameter) -->
+      <article class="card">
+        <h2 class="card__title">
+          <nobr>Current time</nobr>
+          <nobr>(empty parameter)</nobr>
+        </h2>
+        <pre>
+          <span class="key">GET</span> /api/
+        </pre>
+        <pre>
+          {
+          &emsp; <span class="key">"unix"</span>: 1611947123417,
+          &emsp; <span class="key">"utc"</span>: "Fri, Jan 29, 2021, 20:05:23 GMT+1"
+          }
+        </pre>
+        <form action="api/" method="GET">
+          <button class="btn" type="submit">Try it</button>
+        </form>
+      </article>
+
+      <!-- Invalid date -->
+      <article class="card">
+        <h2 class="card__title">Invalid date</h2>
+        <pre>
+          <span class="key">GET</span> /api/hello-guys
+        </pre>
+        <pre>
+          {
+          &emsp; <span class="key">"error"</span>: "Invalid Date"
+          }
+        </pre>
+        <form action="api/hello-guys" method="GET">
+          <button class="btn" type="submit">Try it</button>
+        </form>
+      </article>
+    </section>
+  </main>
+  <footer class="footer">
+    <script>
+      document.write(new Date().getFullYear())
+    </script> | Coded with <i class="fa fa-heart"></i> by <a href="https://www.linkedin.com/in/johnapco/" target="_blank" rel="noopener noreferrer">JohnApCo</a>
+  </footer>
+</body>
+
 </html>
